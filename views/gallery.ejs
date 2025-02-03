@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Activity Gallery</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Our Activities</h1>
+        
+        <% galleries.forEach(gallery => { %>
+            <div class="gallery-entry">
+                <h2><%= gallery.title %></h2>
+                <p class="description"><%= gallery.description %></p>
+                <div class="gallery-grid">
+                    <% gallery.images.forEach(image => { %>
+                        <div class="gallery-item">
+                            <img src="/uploads/<%= image %>" alt="Activity photo">
+                        </div>
+                    <% }); %>
+                </div>
+                <p class="meta">Posted on <%= gallery.created_at %></p>
+            </div>
+        <% }); %>
+    </div>
+</body>
+</html>

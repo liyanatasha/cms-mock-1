@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Gallery Entry</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Add New Activity Gallery</h1>
+        <form action="/admin/add-gallery" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label>Gallery Title:</label>
+                <input type="text" name="title" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Description:</label>
+                <textarea name="description" rows="3" required></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label>Upload Images (max 10):</label>
+                <input type="file" name="galleryImages" multiple accept="image/*">
+            </div>
+            
+            <button type="submit">Publish Gallery</button>
+        </form>
+    </div>
+</body>
+</html>

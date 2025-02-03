@@ -1,0 +1,20 @@
+{
+    "name": "simple-cms",
+    "version": "1.0.0",
+    "description": "A simple CMS",
+    "main": "app.js",
+    "scripts": {
+        "start": "node app.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "dependencies": {
+        "ejs": "^3.1.10",
+        "express": "^4.21.2",
+        "multer": "^1.4.5-lts.1",
+        "sqlite3": "^5.1.7",
+        "uuid": "^11.0.5"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC"
+}

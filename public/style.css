@@ -589,3 +589,242 @@ textarea {
         display: block;
     }
 }
+
+/* Admin Styles */
+.admin-container {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 20px;
+}
+
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.admin-title {
+    font-size: 2.2rem;
+    color: #4a90e2;
+}
+
+.view-public-link {
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.view-public-link:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.admin-form {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    padding: 30px;
+    margin-bottom: 50px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.form-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.form-row {
+    margin-bottom: 25px;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 10px;
+    color: #fff;
+    font-size: 1.1rem;
+}
+
+.form-input, .form-textarea {
+    width: 100%;
+    padding: 12px 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+    color: #fff;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-input:focus, .form-textarea:focus {
+    outline: none;
+    border-color: #4a90e2;
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.file-upload {
+    position: relative;
+    margin-top: 10px;
+}
+
+.file-input {
+    display: none;
+}
+
+.file-label {
+    display: inline-block;
+    padding: 12px 25px;
+    background: #4a90e2;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.file-label:hover {
+    background: #357abd;
+}
+
+.file-selected {
+    margin-left: 15px;
+    color: #ccc;
+    font-size: 0.9rem;
+}
+
+.admin-submit {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(135deg, #4a90e2, #357abd);
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.admin-submit:hover {
+    transform: translateY(-2px);
+}
+
+/* Existing Galleries */
+.existing-galleries {
+    margin-top: 50px;
+}
+
+.section-title {
+    font-size: 1.8rem;
+    color: #fff;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.gallery-admin-card {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    padding: 25px;
+    margin-bottom: 30px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.gallery-admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.gallery-admin-title {
+    font-size: 1.4rem;
+    color: #fff;
+}
+
+.gallery-date {
+    color: #ccc;
+    font-size: 0.9rem;
+}
+
+.gallery-admin-description {
+    color: #ddd;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.gallery-admin-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.gallery-admin-item {
+    position: relative;
+    border-radius: 5px;
+    overflow: hidden;
+    aspect-ratio: 1;
+}
+
+.admin-gallery-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.gallery-admin-item:hover .image-overlay {
+    opacity: 1;
+}
+
+.preview-link {
+    color: white;
+    font-size: 1.5rem;
+    padding: 10px;
+    transition: transform 0.3s ease;
+}
+
+.preview-link:hover {
+    transform: scale(1.2);
+}
+
+.delete-form {
+    text-align: right;
+}
+
+.delete-btn {
+    padding: 8px 20px;
+    background: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.delete-btn:hover {
+    background: #c0392b;
+}
+
+/* Icons */
+.fas {
+    margin-right: 8px;
+}

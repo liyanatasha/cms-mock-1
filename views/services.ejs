@@ -1,7 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Activity Gallery</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Services</title>
     <link rel="stylesheet" href="/style.css">
 </head>
 <body>
@@ -18,23 +20,35 @@
             <li><a href="/contact">Contact Us</a></li>
         </ul>
     </nav>
+
     <div class="container">
-        <h1>Our Activities</h1>
-        
-        <% galleries.forEach(gallery => { %>
-            <div class="gallery-entry">
-                <h2><%= gallery.title %></h2>
-                <p class="description"><%= gallery.description %></p>
-                <div class="gallery-grid">
-                    <% gallery.images.forEach(image => { %>
-                        <div class="gallery-item">
-                            <img src="/uploads/<%= image %>" alt="Activity photo">
-                        </div>
-                    <% }); %>
-                </div>
-                <p class="meta">Posted on <%= gallery.created_at %></p>
+        <h1>Our Services</h1>
+        <div class="services-container">
+            <!-- Left side: Learning Programme -->
+            <div class="service-left">
+                <h2>Learning Programme</h2>
+                <p>Unlock the potential of your young leaders. We specialize in designing and delivering transformative training sessions tailored to soft skill enhancement.</p>
+                <ul>
+                    <li>Leadership</li>
+                    <li>Effective Communication</li>
+                    <li>Teamwork and Synergy</li>
+                    <li>Design Thinking</li>
+                    <li>Growth and Open Mindset</li>
+                </ul>
             </div>
-        <% }); %>
+            <!-- Right side: Team Building -->
+            <div class="service-right">
+                <h2>Team Building</h2>
+                <p>Fostering stronger connections and collaboration among your team to achieve collective goals and improve overall performance.</p>
+                <ul>
+                    <li>Team Bonding and Gratitude</li>
+                    <li>Team Culture Realigning</li>
+                    <li>Teamwork and Collaboration</li>
+                    <li>Trust Building</li>
+                    <li>Morale Boosting</li>
+                </ul>
+            </div>
+        </div>
     </div>
     <footer class="site-footer">
         <div class="footer-content">

@@ -47,11 +47,33 @@ if (!fs.existsSync('public/uploads')) {
   fs.mkdirSync('public/uploads', { recursive: true });
 }
 
-// Admin routes for adding gallery entries
+// Admin route for adding gallery
 app.get('/admin/add-gallery', (req, res) => {
-  res.render('admin/add-gallery');  // Render form to add gallery
+  // Fetch all galleries from the database
+  db.all(`
+    SELECT galleries.*, GROUP_CONCAT(gallery_images.filename) AS images
+    FROM galleries
+    LEFT JOIN gallery_images ON galleries.id = gallery_images.gallery_id
+    GROUP BY galleries.id
+    ORDER BY created_at DESC
+  `, (err, galleries) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).send('Error fetching galleries');
+    }
+
+    // Process images into an array
+    galleries = galleries.map(gallery => ({
+      ...gallery,
+      images: gallery.images ? gallery.images.split(',') : []
+    }));
+
+    // Render the add-gallery page and pass the galleries data
+    res.render('admin/add-gallery', { galleries });
+  });
 });
 
+// Handle gallery form submission
 app.post('/admin/add-gallery', upload.array('galleryImages', 10), (req, res) => {
   const { title, description } = req.body;
   const files = req.files;
@@ -112,8 +134,55 @@ app.get('/', (req, res) => {
   res.render('index');  // Render the landing page
 });
 
+// About Us route
+app.get('/about', (req, res) => {
+  res.render('about');  // Render the About Us page
+});
+
+// Services route
+app.get('/services', (req, res) => {
+  res.render('services');  // Render the Services page
+});
+
+// Contact Us route
+app.get('/contact', (req, res) => {
+  res.render('contact');  // Render the Contact Us page
+});
+
+// Admin route to delete gallery
+app.post('/admin/delete-gallery/:id', (req, res) => {
+  const galleryId = req.params.id;
+
+  // Start database transaction
+  db.serialize(() => {
+    db.run('BEGIN TRANSACTION');
+
+    // Delete images associated with the gallery
+    db.run('DELETE FROM gallery_images WHERE gallery_id = ?', [galleryId], function(err) {
+      if (err) {
+        db.run('ROLLBACK');
+        throw err;
+      }
+
+      // Delete the gallery entry
+      db.run('DELETE FROM galleries WHERE id = ?', [galleryId], function(err) {
+        if (err) {
+          db.run('ROLLBACK');
+          throw err;
+        }
+
+        db.run('COMMIT');
+        res.redirect('/admin/add-gallery');  // Redirect back to the gallery page after deletion
+      });
+    });
+  });
+});
+
 // Start the server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+// Serve static files from public directory
+app.use(express.static('public'));

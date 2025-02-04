@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Gallery Entry</title>
     <link rel="stylesheet" href="/style.css">
 </head>
@@ -25,6 +27,29 @@
             
             <button type="submit">Publish Gallery</button>
         </form>
+
+        <h2>Existing Galleries</h2>
+        <div>
+            <% galleries.forEach(gallery => { %>
+                <div class="gallery-entry">
+                    <h3><%= gallery.title %></h3>
+                    <p><%= gallery.description %></p>
+                    <div class="gallery-grid">
+                        <% gallery.images.forEach(image => { %>
+                            <div class="gallery-item">
+                                <img src="/uploads/<%= image %>" alt="Activity photo">
+                            </div>
+                        <% }); %>
+                    </div>
+                    <p class="meta">Posted on <%= gallery.created_at %></p>
+
+                    <!-- Admin Delete Button -->
+                    <form action="/admin/delete-gallery/<%= gallery.id %>" method="POST" style="display:inline;">
+                        <button type="submit">Delete Gallery</button>
+                    </form>
+                </div>
+            <% }); %>
+        </div>
     </div>
 </body>
 </html>

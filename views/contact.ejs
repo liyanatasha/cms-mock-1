@@ -1,7 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Activity Gallery</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us</title>
     <link rel="stylesheet" href="/style.css">
 </head>
 <body>
@@ -18,23 +20,44 @@
             <li><a href="/contact">Contact Us</a></li>
         </ul>
     </nav>
+
     <div class="container">
-        <h1>Our Activities</h1>
-        
-        <% galleries.forEach(gallery => { %>
-            <div class="gallery-entry">
-                <h2><%= gallery.title %></h2>
-                <p class="description"><%= gallery.description %></p>
-                <div class="gallery-grid">
-                    <% gallery.images.forEach(image => { %>
-                        <div class="gallery-item">
-                            <img src="/uploads/<%= image %>" alt="Activity photo">
-                        </div>
-                    <% }); %>
+        <div class="content-section">
+            <h1>Contact Us</h1>
+            <p class="form-intro">
+                We would love to hear from you! If you're interested in our team-building services 
+                or have any questions, please reach out to us using the form below.
+            </p>
+            
+            <form class="contact-form" action="/submit-contact" method="POST">
+                <div class="form-row">
+                    <div class="input-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
                 </div>
-                <p class="meta">Posted on <%= gallery.created_at %></p>
-            </div>
-        <% }); %>
+
+                <div class="form-row">
+                    <div class="input-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="input-group">
+                        <label for="message">Your Message</label>
+                        <textarea id="message" name="message" rows="5" required></textarea>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn">Send Message</button>
+            </form>
+        </div>
     </div>
     <footer class="site-footer">
         <div class="footer-content">

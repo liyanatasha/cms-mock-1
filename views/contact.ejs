@@ -3,54 +3,275 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us</title>
+    <title>Contact Us - Experience Enablers</title>
     <link rel="stylesheet" href="/style.css">
+    <style>
+        .main-content {
+            padding-top: 100px;
+            color: white;
+        }
+
+        .contact-section {
+            background-color: #643c94;
+            clip-path: polygon(0 0, 0 85%, 100% 95%, 100% 0);
+            padding: 120px 0 200px;
+            color: white;
+        }
+
+        .contact-intro {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .contact-intro h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .contact-intro p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+        }
+
+        .contact-container {
+            display: flex;
+            justify-content: center;
+            max-width: 1200px;
+            margin: -100px auto 0;
+            padding: 0 20px;
+            position: relative;
+            z-index: 2;
+            gap: 40px;
+        }
+
+        .contact-info {
+            flex: 1;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            border: 4px solid #f3eb2e;
+            color: #643c94;
+        }
+
+        .contact-info h2 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+
+        .contact-info p {
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .whatsapp-btn {
+            display: inline-block;
+            background: #25d366;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+
+        .whatsapp-btn:hover {
+            background: #128c7e;
+        }
+
+        .contact-form {
+            flex: 2; /* Make the form area larger */
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            border: 4px solid #f3eb2e;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px; /* Gap between input boxes */
+            margin-bottom: 25px; /* Increased margin for better spacing */
+        }
+
+        .input-group {
+            flex: 1;
+            margin-right: 20px; /* Add space between side-by-side input boxes */
+        }
+
+        .input-group:last-child {
+            margin-right: 0; /* Remove margin for the last input box in a row */
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 10px; /* Increased margin for better spacing */
+            font-size: 1rem;
+            color: #643c94;
+            font-weight: bold;
+        }
+
+        .input-group input,
+        .input-group textarea {
+            width: 100%;
+            padding: 12px; /* Increased padding for larger input boxes */
+            background: #f8f9fa;
+            border: 2px solid #643c94;
+            border-radius: 5px;
+            color: #333;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus,
+        .input-group textarea:focus {
+            outline: none;
+            border-color: #f3eb2e;
+            box-shadow: 0 0 5px rgba(243, 235, 46, 0.3);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 150px; /* Increased height for the message box */
+        }
+
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: #643c94;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            margin-top: 25px; /* Increased margin for better spacing */
+        }
+
+        .submit-btn:hover {
+            background: #4a2d6f;
+        }
+
+        @media (max-width: 768px) {
+            .contact-section {
+                padding: 100px 0 150px;
+            }
+
+            .contact-intro h1 {
+                font-size: 2rem;
+            }
+
+            .contact-intro p {
+                font-size: 1rem;
+            }
+
+            .contact-container {
+                flex-direction: column;
+                margin-top: -50px;
+                gap: 20px;
+            }
+
+            .contact-info,
+            .contact-form {
+                padding: 20px;
+            }
+
+            .form-row {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .input-group {
+                margin-right: 0; /* Remove margin for mobile view */
+            }
+        }
+    </style>
 </head>
 <body>
-    <nav>
-        <!-- Add a clickable logo that links to the landing page -->
-        <a href="/" class="logo">
-            <img src="/images/nav_logo.png" alt="TeamBuild Co. Logo" class="nav-logo">
+    <!-- Header Section -->
+    <header class="main-header">
+        <div class="header-content">
+            <a href="/" class="logo">
+                <img src="/images/nav_logo.png" alt="TeamBuild Co. Logo" class="nav-logo">
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="/about">About Us</a></li>
+                    <li><a href="/services">Services</a></li>
+                    <li><a href="/gallery">Gallery</a></li>
+                    <li><a href="/blog">Blog</a></li>
+                    <li><a href="/contact">Contact Us</a></li>
+                </ul>
+            </nav>
+            <button class="menu-toggle" aria-label="Mobile Menu">
+                <span class="hamburger"></span>
+            </button>
+        </div>
+    </header>
 
-        </a>
-        <ul>
-            <li><a href="/about">About Us</a></li>
-            <li><a href="/services">Services</a></li>
-            <li><a href="/gallery">Gallery</a></li>
-            <li><a href="/contact">Contact Us</a></li>
-        </ul>
-    </nav>
+    <div class="main-content">
+        <!-- Contact Intro Section -->
+        <section class="contact-section">
+            <div class="contact-intro">
+                <h1>Contact Us</h1>
+                <p>We're here to help! Whether you have questions about our services or need assistance, feel free to reach out. Use the form below or connect with us via WhatsApp.</p>
+            </div>
+        </section>
 
-    <div class="container">
-        <div class="content-section">
-            <h1>Contact Us</h1>
-            <p class="form-intro">
-                We would love to hear from you! If you're interested in our team-building services 
-                or have any questions, please reach out to us using the form below.
-            </p>
-            
+        <!-- Contact Container -->
+        <div class="contact-container">
+            <!-- Left Side: Contact Info -->
+            <div class="contact-info">
+                <h2>Get in Touch</h2>
+                <p>For quick responses, message us on WhatsApp. We’re always happy to assist!</p>
+                
+                <!-- WhatsApp Button -->
+                <a href="https://wa.me/[YOUR-PHONE-NUMBER]" class="whatsapp-btn" target="_blank">
+                    💬 Message Us on WhatsApp
+                </a>
+
+                <!-- Address -->
+                <h3>Our Office</h3>
+                <p>123 Street,<br>Kuala Lumpur, Malaysia</p>
+
+                <!-- Response Time Note -->
+                <p>⏳ We typically respond within <strong>24–48 hours</strong>. Thank you for your patience!</p>
+
+                <!-- Privacy Assurance Note -->
+                <p>🔒 Your information is safe with us. We don’t share your details with third parties.</p>
+            </div>
+
+            <!-- Right Side: Contact Form -->
             <form class="contact-form" action="/submit-contact" method="POST">
                 <div class="form-row">
                     <div class="input-group">
-                        <label for="name">Full Name</label>
+                        <label for="name">Name (required)</label>
                         <input type="text" id="name" name="name" required>
                     </div>
                     <div class="input-group">
-                        <label for="email">Email</label>
+                        <label for="email">Email (required)</label>
                         <input type="email" id="email" name="email" required>
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="input-group">
-                        <label for="phone">Phone Number</label>
-                        <input type="tel" id="phone" name="phone">
+                        <label for="phone">Phone Number (required)</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="company">Company Name (optional)</label>
+                        <input type="text" id="company" name="company">
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="input-group">
-                        <label for="message">Your Message</label>
+                        <label for="message">Your Message (required)</label>
                         <textarea id="message" name="message" rows="5" required></textarea>
                     </div>
                 </div>
@@ -59,23 +280,19 @@
             </form>
         </div>
     </div>
+
+    <!-- Footer Section -->
     <footer class="site-footer">
         <div class="footer-content">
-            <!-- Brand Icon (replace with your actual logo) -->
-              <!-- Brand Logo -->
-    <div class="footer-brand">
-        <img src="/images/logo_footer.png" alt="TeamBuild Co. Logo" class="brand-logo">
-
-      </div>
-    
-            <!-- Social Links -->
+            <div class="footer-brand">
+                <img src="/images/logo_footer.png" alt="TeamBuild Co. Logo" class="brand-logo">
+            </div>
             <div class="footer-social">
                 <a href="[YOUR-LINKEDIN-URL]" target="_blank" class="social-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                         <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
                     </svg>
                 </a>
-                
                 <a href="[YOUR-INSTAGRAM-URL]" target="_blank" class="social-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                         <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
@@ -84,5 +301,34 @@
             </div>
         </div>
     </footer>
+
+    <!-- Mobile Menu Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.querySelector('.menu-toggle');
+            const nav = document.querySelector('.main-header nav ul');
+            
+            menuToggle.addEventListener('click', function() {
+                this.classList.toggle('active');
+                nav.classList.toggle('active');
+            });
+
+            // Close menu when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!menuToggle.contains(e.target) && !nav.contains(e.target)) {
+                    menuToggle.classList.remove('active');
+                    nav.classList.remove('active');
+                }
+            });
+
+            // Close menu when clicking a link
+            document.querySelectorAll('.main-header nav ul li a').forEach(link => {
+                link.addEventListener('click', () => {
+                    menuToggle.classList.remove('active');
+                    nav.classList.remove('active');
+                });
+            });
+        });
+    </script>
 </body>
 </html>

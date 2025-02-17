@@ -3,133 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Services - Experience Enablers</title>
+    <title><%= post.title %> - Experience Enablers</title>
     <link rel="stylesheet" href="/style.css">
     <style>
-        /* Services-specific styles */
-        .services-hero {
-            background-color: #643c94;
-            clip-path: polygon(0 0, 0 85%, 100% 95%, 100% 0);
-            padding: 120px 0 200px;
-            position: relative;
-            overflow: hidden;
-            margin-bottom: -100px;
-        }
-
-        .services-hero-content {
+        .blog-post-container {
             max-width: 800px;
-            margin: 0 auto;
-            text-align: center;
+            margin: 150px auto 60px;  /* Increased top margin */
             padding: 0 20px;
-            position: relative;
-            z-index: 2;
-            color: white;
         }
 
-        .services-hero-content h1 {
+        .blog-post-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .blog-post-title {
+            color: #643c94;
             font-size: 2.5rem;
             margin-bottom: 20px;
         }
 
-        .services-hero-content p {
-            font-size: 1.2rem;
-            line-height: 1.6;
-        }
-
-        .services-container {
-            max-width: 1200px;
-            margin: -50px auto 50px;
-            padding: 0 20px;
-            position: relative;
-            z-index: 2;
-            display: flex;
-            gap: 30px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .service-card {
-            flex: 1;
-            min-width: 300px;
-            max-width: 500px;
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            border: 3px solid #f3eb2e;
-            transition: transform 0.3s ease;
-        }
-
-        .service-card:hover {
-            transform: translateY(-10px);
-        }
-
-        .service-image {
-            height: 200px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .service-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .service-content {
-            padding: 30px;
-            color: #643c94;
-        }
-
-        .service-content h2 {
-            font-size: 1.8rem;
-            margin-bottom: 15px;
-            color: #643c94;
-        }
-
-        .service-content p {
-            margin-bottom: 20px;
-            line-height: 1.6;
+        .blog-post-meta {
             color: #666;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
         }
 
-        .service-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
+        .blog-post-tags {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 30px;
         }
 
-        .service-list li {
-            margin: 10px 0;
-            padding-left: 25px;
-            position: relative;
+        .blog-tag {
+            background: #f3eb2e;
             color: #643c94;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
         }
 
-        .service-list li::before {
-            content: '•';
-            position: absolute;
-            left: 0;
-            color: #f3eb2e;
-            font-size: 1.5em;
-            line-height: 1;
+        .blog-featured-image {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 40px;
+        }
+
+        .blog-post-content {
+            color: #333;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 60px;
+        }
+
+        .blog-post-content p {
+            margin-bottom: 20px;
+        }
+
+        .back-to-blog {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: #643c94;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 30px;
+            padding: 12px 24px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .back-to-blog:hover {
+            background-color: #f3eb2e;
+            color: #643c94;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
         }
 
         @media (max-width: 768px) {
-            .services-hero {
-                padding: 100px 0 150px;
+            .blog-post-container {
+                margin-top: 100px;
             }
 
-            .services-hero-content h1 {
+            .blog-post-title {
                 font-size: 2rem;
             }
 
-            .services-container {
-                margin-top: -30px;
-            }
-
-            .service-card {
-                width: 100%;
+            .blog-post-content {
+                font-size: 1rem;
             }
         }
     </style>
@@ -156,56 +124,37 @@
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="services-hero">
-        <div class="geometric-circle"></div>
-        <div class="geometric-circle-2"></div>
-        <div class="geometric-cube"></div>
-        <div class="geometric-cube-2"></div>
-        <div class="services-hero-content">
-            <h1>Our Services</h1>
-            <p>Discover our comprehensive range of team building and development programs designed to transform your organization.</p>
-        </div>
-    </section>
+    <main class="blog-post-container">
+        <a href="/blog" class="back-to-blog">
+            ← Back to Blog
+        </a>
 
-    <!-- Services Cards -->
-    <div class="services-container">
-        <!-- Learning Programme Card -->
-        <div class="service-card">
-            <div class="service-image">
-                <img src="/images/learning-bg.jpg" alt="Learning Programme">
-            </div>
-            <div class="service-content">
-                <h2>Learning Programme</h2>
-                <p>Unlock the potential of your young leaders through our transformative training sessions focused on soft skill enhancement.</p>
-                <ul class="service-list">
-                    <li>Leadership Development</li>
-                    <li>Effective Communication</li>
-                    <li>Teamwork and Synergy</li>
-                    <li>Design Thinking</li>
-                    <li>Growth and Open Mindset</li>
-                </ul>
-            </div>
-        </div>
+        <article>
+            <header class="blog-post-header">
+                <h1 class="blog-post-title"><%= post.title %></h1>
+                <div class="blog-post-meta">
+                    Posted on <%= new Date(post.created_at).toLocaleDateString('en-US', { 
+                        year: 'numeric', 
+                        month: 'long', 
+                        day: 'numeric' 
+                    }) %>
+                </div>
+                <div class="blog-post-tags">
+                    <% post.tags.forEach(tag => { %>
+                        <span class="blog-tag"><%= tag %></span>
+                    <% }); %>
+                </div>
+            </header>
 
-        <!-- Team Building Card -->
-        <div class="service-card">
-            <div class="service-image">
-                <img src="/images/teambuilding-bg.jpg" alt="Team Building">
+            <% if (post.image) { %>
+                <img src="/uploads/<%= post.image %>" alt="<%= post.title %>" class="blog-featured-image">
+            <% } %>
+
+            <div class="blog-post-content">
+                <%- post.content %>
             </div>
-            <div class="service-content">
-                <h2>Team Building</h2>
-                <p>Foster stronger connections and collaboration among your team members to achieve collective goals and improve performance.</p>
-                <ul class="service-list">
-                    <li>Team Bonding and Gratitude</li>
-                    <li>Team Culture Realignment</li>
-                    <li>Teamwork and Collaboration</li>
-                    <li>Trust Building</li>
-                    <li>Morale Boosting</li>
-                </ul>
-            </div>
-        </div>
-    </div>
+        </article>
+    </main>
 
     <!-- Footer -->
     <footer class="site-footer">

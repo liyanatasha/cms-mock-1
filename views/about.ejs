@@ -3,84 +3,484 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Us</title>
+    <title>About Us - Experience Enablers</title>
     <link rel="stylesheet" href="/style.css">
+    <style>
+        .main-content {
+            padding-top: 100px;
+            color: #643c94;
+        }
+    
+        .about-section {
+            background-color: #643c94;
+            clip-path: polygon(0 0, 0 85%, 100% 95%, 100% 0);
+            padding: 120px 0 200px;
+            color: white;
+        }
+    
+        .about-intro {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            padding: 0 20px;
+        }
+    
+        .about-intro h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+    
+        .about-intro p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+        }
+    
+        .about-container {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            width: 100%;
+            max-width: 1200px;
+            margin: -100px auto 0;
+            padding: 0 20px;
+            position: relative;
+            z-index: 2;
+        }
+    
+        .about-box {
+            width: 400px;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            border: 4px solid #f3eb2e; /* Thick yellow border */
+            transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
+        }
+    
+        .about-box:hover {
+            transform: translateY(-10px); /* Lift the box on hover */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
+        }
+    
+        .profile-pic {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: 0 auto 25px;
+            border: 3px solid #643c94; /* Keep the profile picture border as is */
+        }
+    
+        .profile-pic img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    
+        .about-box h2 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            color: #643c94;
+        }
+    
+        .about-box h3 {
+            font-size: 1.2rem;
+            color: #4a90e2;
+            margin-bottom: 8px;
+        }
+    
+        .role {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 20px;
+        }
+    
+        .linkedin-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #643c94;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+    
+        .linkedin-icon {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
+        }
+    
+        .linkedin-link:hover {
+            opacity: 0.8;
+        }
+
+        /* New Styles for Gamification Section */
+        .gamification-science {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        .gamification-science h2 {
+            font-size: 2rem;
+            color: #643c94;
+            margin-bottom: 20px;
+        }
+
+        .gamification-science h3 {
+            font-size: 1.5rem;
+            color: #643c94;
+            margin-bottom: 15px;
+        }
+
+        .gamification-science ul {
+            text-align: left;
+            margin: 0 auto;
+            max-width: 600px;
+        }
+
+        .gamification-science ul li {
+            margin-bottom: 10px;
+        }
+
+        .references {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #666;
+            text-align: right;
+        }
+
+        .references button {
+            background: none;
+            border: none;
+            color: #643c94;
+            font-size: 0.9rem;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .references button:hover {
+            opacity: 0.8;
+        }
+
+        #reference-content {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #666;
+            text-align: right;
+        }
+    
+        @media (max-width: 768px) {
+            .about-section {
+                padding: 100px 0 150px;
+            }
+    
+            .about-intro h1 {
+                font-size: 2rem;
+            }
+    
+            .about-intro p {
+                font-size: 1rem;
+            }
+    
+            .about-container {
+                margin-top: -50px;
+            }
+    
+            .about-box {
+                width: 100%;
+                max-width: 400px;
+            }
+        }
+
+        /* Gamification content*/
+        /* Improved Typography and Content Styling */
+.gamification-science {
+    max-width: 800px;
+    margin: 80px auto;
+    padding: 0 40px;
+    line-height: 1.8;
+}
+
+.gamification-science h2 {
+    font-size: 2.5rem;
+    color: #643c94;
+    margin-bottom: 30px;
+    line-height: 1.3;
+    text-align: left;
+}
+
+.gamification-science h3 {
+    font-size: 1.8rem;
+    color: #643c94;
+    margin: 40px 0 25px;
+    text-align: left;
+}
+
+.gamification-science p {
+    font-size: 1.1rem;
+    color: #444;
+    margin-bottom: 25px;
+    text-align: left;
+    max-width: 70ch;
+}
+
+.gamification-science ul {
+    text-align: left;
+    margin: 30px 0 40px;
+    padding-left: 25px;
+    list-style-type: none;
+}
+
+.gamification-science ul li {
+    margin-bottom: 25px;
+    position: relative;
+    padding-left: 25px;
+    color: #444;
+    font-size: 1.1rem;
+}
+
+.gamification-science ul li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 8px;
+    height: 8px;
+    background-color: #643c94;
+    border-radius: 50%;
+}
+
+.gamification-science ul li strong {
+    color: #643c94;
+    display: block;
+    margin-bottom: 8px;
+    font-size: 1.15rem;
+}
+
+.gamification-science a {
+    color: #643c94;
+    text-decoration: none;
+    border-bottom: 2px solid #f3eb2e;
+    transition: border-color 0.3s ease;
+}
+
+.gamification-science a:hover {
+    border-color: #643c94;
+}
+
+/* References Section Styling */
+.references {
+    margin-top: 50px;
+    padding-top: 30px;
+    border-top: 1px solid #eee;
+}
+
+.references button {
+    background: #643c94;
+    border: none;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+}
+
+.references button:hover {
+    background-color: #52307a;
+}
+
+#reference-content {
+    margin-top: 20px;
+    padding: 25px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+}
+
+#reference-content ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#reference-content ul li {
+    margin-bottom: 15px;
+    font-size: 0.95rem;
+    color: #666;
+    line-height: 1.6;
+    padding-left: 0;
+}
+
+#reference-content ul li::before {
+    display: none;
+}
+
+#reference-content ul li em {
+    color: #643c94;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .gamification-science {
+        margin: 60px auto;
+        padding: 0 25px;
+    }
+
+    .gamification-science h2 {
+        font-size: 2rem;
+        margin-bottom: 25px;
+    }
+
+    .gamification-science h3 {
+        font-size: 1.5rem;
+        margin: 30px 0 20px;
+    }
+
+    .gamification-science p,
+    .gamification-science ul li {
+        font-size: 1rem;
+    }
+
+    .gamification-science ul {
+        margin: 20px 0 30px;
+    }
+
+    .gamification-science ul li {
+        margin-bottom: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .gamification-science {
+        margin: 40px auto;
+        padding: 0 20px;
+    }
+
+    .gamification-science h2 {
+        font-size: 1.75rem;
+    }
+
+    .gamification-science h3 {
+        font-size: 1.35rem;
+    }
+
+    #reference-content {
+        padding: 15px;
+    }
+}
+    </style>
 </head>
 <body>
-    <nav>
-        <!-- Add a clickable logo that links to the landing page -->
-        <a href="/" class="logo">
-            <img src="/images/nav_logo.png" alt="TeamBuild Co. Logo" class="nav-logo">
-
-        </a>
-        <ul>
-            <li><a href="/about">About Us</a></li>
-            <li><a href="/services">Services</a></li>
-            <li><a href="/gallery">Gallery</a></li>
-            <li><a href="/contact">Contact Us</a></li>
-        </ul>
-    </nav>
-
-    <div class="container">
-        <div class="content-section">
-            <h1>About Us</h1>
-            <p>
-                <!-- Add your content for About Us here -->
-                Welcome to Experience Enablers, your premier partner in team-building events. We specialize in creating tailored experiences that foster collaboration, communication, and success.
-            </p>
+    <!-- Header Section -->
+    <header class="main-header">
+        <div class="header-content">
+            <a href="/" class="logo">
+                <img src="/images/nav_logo.png" alt="TeamBuild Co. Logo" class="nav-logo">
+            </a>
+            <button class="menu-toggle" aria-label="Mobile Menu">
+                <span class="hamburger"></span>
+            </button>
+            <nav>
+                <ul>
+                    <li><a href="/about">About Us</a></li>
+                    <li><a href="/services">Services</a></li>
+                    <li><a href="/gallery">Gallery</a></li>
+                    <li><a href="/blog">Blog</a></li>
+                    <li><a href="/contact">Contact Us</a></li>
+                </ul>
+            </nav>
         </div>
-            <div class="about-container">
-                <!-- Jason Fung Card -->
-                <div class="about-box">
-                    <div class="profile-pic">
-                        <img src="/images/jason.png" alt="Jason Fung">
-                    </div>
-                    <h2>JASON FUNG</h2>
-                    <h3>People Development & Engagement</h3>
-                    <p class="role">Chief Experience Officer</p>
-                    <a href="https://linkedin.com/in/jasonfjh" target="_blank" class="linkedin-link">
-                        <svg class="linkedin-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                            <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
-                        </svg>
-                        /jasonfjh
-                    </a>
-                </div>
-    
-                <!-- Michelle Wong Card -->
-                <div class="about-box">
-                    <div class="profile-pic">
-                        <img src="/images/michelle.png" alt="Michelle Wong">
-                    </div>
-                    <h2>MICHELLE WONG</h2>
-                    <h3>People Development & Engagement</h3>
-                    <p class="role">Chief Creative Officer</p>
-                    <a href="https://linkedin.com/in/michelle-wtq" target="_blank" class="linkedin-link">
-                        <svg class="linkedin-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                            <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
-                        </svg>
-                        /michelle-wtq
-                    </a>
-                </div>
+    </header>
+
+    <div class="main-content">
+        <!-- About Intro Section -->
+        <section class="about-section">
+            <div class="about-intro">
+                <h1>About Us</h1>
+                <p>Welcome to Experience Enablers, your premier partner in team-building events. We specialize in creating tailored experiences that foster collaboration, communication, and success.</p>
             </div>
-        
+        </section>
+
+        <!-- Team Section -->
+        <div class="about-container">
+            <!-- Jason Fung Card -->
+            <div class="about-box">
+                <div class="profile-pic">
+                    <img src="/images/jason.png" alt="Jason Fung">
+                </div>
+                <h2>JASON FUNG</h2>
+                <h3>People Development & Engagement</h3>
+                <p class="role">Chief Experience Officer</p>
+                <a href="https://linkedin.com/in/jasonfjh" target="_blank" class="linkedin-link">
+                    <svg class="linkedin-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                    </svg>
+                    /jasonfjh
+                </a>
+            </div>
+
+            <!-- Michelle Wong Card -->
+            <div class="about-box">
+                <div class="profile-pic">
+                    <img src="/images/michelle.png" alt="Michelle Wong">
+                </div>
+                <h2>MICHELLE WONG</h2>
+                <h3>People Development & Engagement</h3>
+                <p class="role">Chief Creative Officer</p>
+                <a href="https://linkedin.com/in/michelle-wtq" target="_blank" class="linkedin-link">
+                    <svg class="linkedin-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                    </svg>
+                    /michelle-wtq
+                </a>
+            </div>
+        </div>
+
+        <!-- Gamification Section -->
+        <section class="gamification-science">
+            <h2>The Science Behind Learning Through Gamification</h2>
+            <p>Gamification in education refers to the integration of game-like elements—such as points, badges, and leaderboards—into non-game environments to enhance learning experiences. In Malaysia, gamification is increasingly being adopted in schools, corporate training programs, and professional development workshops to make learning more engaging and effective. By turning learning into an interactive and enjoyable experience, gamification boosts engagement, motivation, and knowledge retention.</p>
+            
+            <h3>Key Benefits of Gamification for Learning</h3>
+            <ul>
+                <li><strong>Enhanced Engagement:</strong> Gamification keeps learners actively involved by turning the learning process into a game. A study on gamified programming education found that students' participation increased significantly when using gamified systems (Smiderle et al., 2020). This heightened engagement is particularly effective for young professionals and students in Malaysia.</li>
+                <li><strong>Improved Attitudes and Self-Efficacy:</strong> Gamification fosters a positive learning environment where students feel more confident about their abilities. Research indicates that students' self-efficacy and their attitudes toward difficult subjects like statistics were significantly improved through gamified learning (Khoshnoodifar et al., 2023). For those focusing on self-development, this makes gamification a powerful tool to boost motivation and skill-building.</li>
+                <li><strong>Personalized Learning Paths:</strong> Studies show that gamified learning environments can adapt to the learner’s progress and preferences, enhancing their experience. This customization promotes deeper learning and problem-solving skills, key to developing a well-rounded skillset (Chen & Liang, 2022).</li>
+            </ul>
+            
+            <p>Ready to experience the <em>benefits of gamification</em> firsthand? <a href="/services">Explore our gamified learning programs</a> designed for Malaysians to accelerate self-development and professional growth.</p>
+
+            <!-- References Section -->
+            <div class="references">
+                <button onclick="toggleReferences()">Show References</button>
+                <div id="reference-content" style="display: none;">
+                    <ul>
+                        <li>Khoshnoodifar, M., Ashouri, A., & Taheri, M. (2023). Effectiveness of gamification in enhancing learning and attitudes: A study of statistics education for health school students. <em>Journal of Advances in Medical Education & Professionalism, 11</em>(4), 230–239. https://doi.org/10.30476/JAMP.2023.98953.1817</li>
+                        <li>Chen, J., & Liang, M. (2022). Play hard, study hard? The influence of gamification on students’ study engagement. <em>Frontiers in Psychology, 13</em>, 994700. https://doi.org/10.3389/fpsyg.2022.994700</li>
+                        <li>Smiderle, R., Rigo, S. J., Marques, L. B., & Alves, C. R. (2020). The impact of gamification on students’ learning, engagement, and behavior based on their personality traits. <em>Smart Learning Environments, 7</em>, 3. https://doi.org/10.1186/s40561-019-0098-x</li>
+                    </ul>
+                </div>
+                
+            </div>
+        </section>
     </div>
+
     <footer class="site-footer">
         <div class="footer-content">
-            <!-- Brand Icon (replace with your actual logo) -->
-              <!-- Brand Logo -->
-    <div class="footer-brand">
-        <img src="/images/logo_footer.png" alt="TeamBuild Co. Logo" class="brand-logo">
-
-      </div>
-    
-            <!-- Social Links -->
+            <div class="footer-brand">
+                <img src="/images/logo_footer.png" alt="TeamBuild Co. Logo" class="brand-logo">
+            </div>
             <div class="footer-social">
                 <a href="[YOUR-LINKEDIN-URL]" target="_blank" class="social-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                         <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
                     </svg>
                 </a>
-                
                 <a href="[YOUR-INSTAGRAM-URL]" target="_blank" class="social-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                         <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
@@ -89,5 +489,44 @@
             </div>
         </div>
     </footer>
+
+    <!-- Mobile Menu Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.querySelector('.menu-toggle');
+            const nav = document.querySelector('.main-header nav ul');
+            
+            menuToggle.addEventListener('click', function() {
+                this.classList.toggle('active');
+                nav.classList.toggle('active');
+            });
+
+            // Close menu when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!menuToggle.contains(e.target) && !nav.contains(e.target)) {
+                    menuToggle.classList.remove('active');
+                    nav.classList.remove('active');
+                }
+            });
+
+            // Close menu when clicking a link
+            document.querySelectorAll('.main-header nav ul li a').forEach(link => {
+                link.addEventListener('click', () => {
+                    menuToggle.classList.remove('active');
+                    nav.classList.remove('active');
+                });
+            });
+        });
+
+        // Function to toggle references
+        function toggleReferences() {
+            var content = document.getElementById("reference-content");
+            if (content.style.display === "none") {
+                content.style.display = "block";
+            } else {
+                content.style.display = "none";
+            }
+        }
+    </script>
 </body>
 </html>

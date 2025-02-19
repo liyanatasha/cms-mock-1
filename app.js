@@ -187,7 +187,7 @@ app.get('/admin', (req, res) => {
 });
 
 // Handle gallery submission
-app.post('/admin/add-gallery', upload.array('galleryImages', 10), (req, res) => {
+app.post('/admin/add-gallery', upload.array('galleryImages', 50), (req, res) => {
     const { title, description } = req.body;
     const files = req.files;
 

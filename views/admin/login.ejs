@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - Experience Enablers</title>
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+
+        .login-box {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border: 3px solid #f3eb2e;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .login-logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-logo img {
+            max-width: 200px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #643c94;
+            font-weight: bold;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #643c94;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .login-btn, .recovery-btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .login-btn {
+            background: #643c94;
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .recovery-btn {
+            background: #f3eb2e;
+            color: #643c94;
+        }
+
+        .login-btn:hover {
+            background: #4a2d6f;
+        }
+
+        .recovery-btn:hover {
+            background: #e6de29;
+        }
+
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+        }
+
+        .alert-error {
+            background-color: #dc3545;
+        }
+
+        .alert-success {
+            background-color: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-box">
+            <div class="login-logo">
+                <img src="/images/nav_logo.png" alt="Experience Enablers Logo">
+            </div>
+
+            <% if (locals.error) { %>
+                <div class="alert alert-error">
+                    <%= error %>
+                </div>
+            <% } %>
+
+            <% if (locals.success) { %>
+                <div class="alert alert-success">
+                    <%= success %>
+                </div>
+            <% } %>
+
+            <form action="/admin/login" method="POST" id="loginForm">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+
+                <button type="submit" class="login-btn">Login</button>
+            </form>
+
+            <form action="/admin/recovery" method="GET">
+                <button type="submit" class="recovery-btn">Use Recovery Code</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

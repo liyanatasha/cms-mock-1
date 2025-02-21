@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Recovery Codes - Experience Enablers</title>
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        /* Use same base styles as other pages */
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+
+        .login-box {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border: 3px solid #f3eb2e;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .login-logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-logo img {
+            max-width: 200px;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border: 2px solid #ffeeba;
+            color: #856404;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .warning-box h2 {
+            color: #856404;
+            margin-bottom: 15px;
+        }
+
+        .code-container {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+        }
+
+        .code-box {
+            background: white;
+            border: 2px solid #643c94;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        .code-box h3 {
+            color: #643c94;
+            margin-bottom: 10px;
+        }
+
+        .code {
+            font-family: monospace;
+            font-size: 1.2rem;
+            color: #212529;
+            background: #e9ecef;
+            padding: 10px;
+            border-radius: 3px;
+            text-align: center;
+        }
+
+        .print-btn {
+            width: 100%;
+            padding: 15px;
+            background: #643c94;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            margin-bottom: 15px;
+        }
+
+        .print-btn:hover {
+            background: #4a2d6f;
+        }
+
+        .continue-btn {
+            width: 100%;
+            padding: 15px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .continue-btn:hover {
+            background: #218838;
+        }
+
+        @media print {
+            .no-print {
+                display: none;
+            }
+
+            .code-container {
+                border: 1px solid #000;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-box">
+            <div class="login-logo no-print">
+                <img src="/images/nav_logo.png" alt="Experience Enablers Logo">
+            </div>
+
+            <div class="warning-box">
+                <h2>⚠️ IMPORTANT ⚠️</h2>
+                <p>Store these recovery codes in a secure location. They will not be shown again.</p>
+                <p>You will need these codes if you forget your password.</p>
+            </div>
+
+            <div class="code-container">
+                <div class="code-box">
+                    <h3>Recovery Code 1 (Store in company safe)</h3>
+                    <div class="code"><%= recoveryCode1 %></div>
+                </div>
+
+                <div class="code-box">
+                    <h3>Recovery Code 2 (Store in secondary location)</h3>
+                    <div class="code"><%= recoveryCode2 %></div>
+                </div>
+            </div>
+
+            <button onclick="window.print()" class="print-btn no-print">
+                Print Recovery Codes
+            </button>
+
+            <a href="/admin" class="continue-btn no-print">
+                Continue to Admin Dashboard
+            </a>
+        </div>
+    </div>
+</body>
+</html>

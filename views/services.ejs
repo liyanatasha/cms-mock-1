@@ -104,16 +104,88 @@
             padding-left: 25px;
             position: relative;
             color: #643c94;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
 
         .service-list li::before {
             content: '•';
-            position: absolute;
-            left: 0;
-            color: #f3eb2e;
-            font-size: 1.5em;
-            line-height: 1;
+    position: absolute;
+    left: 0;
+    color: #f3eb2e;
+    font-size: 1.5em;
+    line-height: 1;
+    transition: all 0.3s ease;
         }
+
+        /* Add subtle hover effect without disrupting the original design */
+.service-list li:hover {
+    transform: translateX(5px);
+}
+
+.service-list li:hover::before {
+    transform: scale(1.2);
+}
+
+/* Modal Styles */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal {
+    display: none;
+    position: relative;
+    width: 50%;
+    max-width: 600px;
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    border: 3px solid #f3eb2e;
+}
+
+.modal-content {
+    color: #643c94;
+}
+
+.modal-content h3 {
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+}
+
+.modal-content p {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.close-modal {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 24px;
+    background: none;
+    border: none;
+    color: #643c94;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.close-modal:hover {
+    background: #f3eb2e;
+    transform: scale(1.1);
+}
 
         @media (max-width: 768px) {
             .services-hero {
@@ -131,6 +203,11 @@
             .service-card {
                 width: 100%;
             }
+
+            .modal {
+        width: 90%;
+        margin: 20px;
+    }
         }
     </style>
 </head>
@@ -179,12 +256,13 @@
                 <h2>Learning Programme</h2>
                 <p>Unlock the potential of your young leaders through our transformative training sessions focused on soft skill enhancement.</p>
                 <ul class="service-list">
-                    <li>Leadership Development</li>
-                    <li>Effective Communication</li>
-                    <li>Teamwork and Synergy</li>
-                    <li>Design Thinking</li>
-                    <li>Growth and Open Mindset</li>
+                    <li data-modal="leadership">Leadership Development</li>
+                    <li data-modal="communication">Effective Communication</li>
+                    <li data-modal="teamwork">Teamwork and Synergy</li>
+                    <li data-modal="design">Design Thinking</li>
+                    <li data-modal="growth">Growth and Open Mindset</li>
                 </ul>
+                
             </div>
         </div>
 
@@ -197,12 +275,13 @@
                 <h2>Team Building</h2>
                 <p>Foster stronger connections and collaboration among your team members to achieve collective goals and improve performance.</p>
                 <ul class="service-list">
-                    <li>Team Bonding and Gratitude</li>
-                    <li>Team Culture Realignment</li>
-                    <li>Teamwork and Collaboration</li>
-                    <li>Trust Building</li>
-                    <li>Morale Boosting</li>
+                    <li data-modal="bonding">Team Bonding and Gratitude</li>
+                    <li data-modal="culture">Team Culture Realignment</li>
+                    <li data-modal="collaboration">Teamwork and Collaboration</li>
+                    <li data-modal="trust">Trust Building</li>
+                    <li data-modal="morale">Morale Boosting</li>
                 </ul>
+                
             </div>
         </div>
     </div>
@@ -228,16 +307,140 @@
         </div>
     </footer>
 
+    <!-- Modal container -->
+    <div class="modal-overlay" id="modalOverlay">
+        <!-- Leadership Modal -->
+        <div class="modal" id="leadership">
+            <div class="modal-content">
+                <h3>Leadership Development</h3>
+                <p>Our leadership development program focuses on building essential leadership skills including decision-making, delegation, and strategic thinking. Participants learn through hands-on activities and real-world scenarios that challenge and develop their leadership capabilities.</p>
+                <button class="close-modal">×</button>
+            </div>
+        </div>
+        
+        <!-- Communication Modal -->
+        <div class="modal" id="communication">
+            <div class="modal-content">
+                <h3>Effective Communication</h3>
+                <p>Master the art of clear and impactful communication. This program covers verbal and non-verbal communication, active listening, presentation skills, and understanding different communication styles for better team interaction.</p>
+                <button class="close-modal">×</button>
+            </div>
+        </div>
+
+        <!-- Teamwork Modal -->
+        <div class="modal" id="teamwork">
+            <div class="modal-content">
+                <h3>Teamwork and Synergy</h3>
+                <p>Learn to work effectively in teams by understanding group dynamics, roles, and collaborative problem-solving. Our program emphasizes practical exercises that demonstrate the power of synergy and collective achievement.</p>
+                <button class="close-modal">×</button>
+            </div>
+        </div>
+
+        <!-- Design Thinking Modal -->
+        <div class="modal" id="design">
+            <div class="modal-content">
+                <h3>Design Thinking</h3>
+                <p>Explore the principles of design thinking to solve complex problems creatively. Learn to empathize with users, define problems clearly, ideate solutions, prototype rapidly, and test effectively.</p>
+                <button class="close-modal">×</button>
+            </div>
+        </div>
+
+        <!-- Growth Mindset Modal -->
+        <div class="modal" id="growth">
+            <div class="modal-content">
+                <h3>Growth and Open Mindset</h3>
+                <p>Develop a mindset that embraces challenges and sees failures as opportunities for growth. Learn techniques for continuous improvement and maintaining adaptability in face of change.</p>
+                <button class="close-modal">×</button>
+            </div>
+        </div>
+
+        <!-- Team Bonding Modal -->
+        <div class="modal" id="bonding">
+            <div class="modal-content">
+                <h3>Team Bonding and Gratitude</h3>
+                <p>Build stronger connections between team members through activities that foster mutual understanding and appreciation. Learn to create a culture of gratitude that strengthens team relationships.</p>
+                <button class="close-modal">×</button>
+            </div>
+        </div>
+
+        <!-- Team Culture Modal -->
+        <div class="modal" id="culture">
+            <div class="modal-content">
+                <h3>Team Culture Realignment</h3>
+                <p>Assess and reshape team culture to align with organizational values and goals. Develop strategies for maintaining positive team dynamics and creating an inclusive environment.</p>
+                <button class="close-modal">×</button>
+            </div>
+        </div>
+
+        <!-- Collaboration Modal -->
+        <div class="modal" id="collaboration">
+            <div class="modal-content">
+                <h3>Teamwork and Collaboration</h3>
+                <p>Master the art of working together effectively through structured activities that highlight the importance of coordination, communication, and shared goals in achieving team success.</p>
+                <button class="close-modal">×</button>
+            </div>
+        </div>
+
+        <!-- Trust Building Modal -->
+        <div class="modal" id="trust">
+            <div class="modal-content">
+                <h3>Trust Building</h3>
+                <p>Develop deep trust within teams through exercises that promote transparency, reliability, and mutual support. Learn techniques for building and maintaining trust in professional relationships.</p>
+                <button class="close-modal">×</button>
+            </div>
+        </div>
+
+        <!-- Morale Modal -->
+        <div class="modal" id="morale">
+            <div class="modal-content">
+                <h3>Morale Boosting</h3>
+                <p>Learn strategies for maintaining high team morale through engagement activities, recognition programs, and positive reinforcement techniques that create an energetic and motivated work environment.</p>
+                <button class="close-modal">×</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Mobile Menu Script -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const menuToggle = document.querySelector('.menu-toggle');
             const nav = document.querySelector('.main-header nav ul');
+            const modalOverlay = document.getElementById('modalOverlay');
+    const modals = document.querySelectorAll('.modal');
+    const serviceItems = document.querySelectorAll('.service-list li');
             
             menuToggle.addEventListener('click', function() {
                 this.classList.toggle('active');
                 nav.classList.toggle('active');
             });
+
+            // Open modal
+    serviceItems.forEach(item => {
+        item.addEventListener('click', () => {
+            const modalId = item.getAttribute('data-modal');
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modalOverlay.style.display = 'flex';
+                modal.style.display = 'block';
+            }
+        });
+    });
+    
+    // Close modal when clicking the X button
+    document.querySelectorAll('.close-modal').forEach(button => {
+        button.addEventListener('click', () => {
+            modalOverlay.style.display = 'none';
+            modals.forEach(modal => modal.style.display = 'none');
+        });
+    });
+    
+    // Close modal when clicking outside
+    modalOverlay.addEventListener('click', (e) => {
+        if (e.target === modalOverlay) {
+            modalOverlay.style.display = 'none';
+            modals.forEach(modal => modal.style.display = 'none');
+        }
+    });
 
             // Close menu when clicking outside
             document.addEventListener('click', function(e) {

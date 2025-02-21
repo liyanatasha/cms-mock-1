@@ -7,7 +7,8 @@ const fs = require('fs');
 const bcrypt = require('bcrypt');
 const session = require('express-session');
 const { db, generateRecoveryCode } = require('./database');
-
+const crypto = require('crypto');
+const sessionSecret = process.env.SESSION_SECRET || crypto.randomBytes(32).toString('hex');
 const app = express();
 
 // Configure EJS and middleware
@@ -60,13 +61,34 @@ if (!fs.existsSync('public/uploads')) {
 
 // Middleware to check if user is authenticated
 const isAuthenticated = (req, res, next) => {
-    if (req.session.isAuthenticated) {
+    console.log('Checking authentication:', {
+        sessionExists: !!req.session,
+        isAuthenticated: req.session?.isAuthenticated,
+        sessionID: req.sessionID
+    });
+
+    if (req.session && req.session.isAuthenticated) {
+        console.log('Authentication successful');
         next();
     } else {
+        console.log('Authentication failed, redirecting to login');
         res.redirect('/admin/login');
     }
 };
+// Add before your routes
+app.set('trust proxy', 1);
 
+app.use(session({
+    secret: sessionSecret,
+    resave: true,           // Changed to true to ensure session is saved
+    saveUninitialized: false,
+    cookie: {
+        secure: false,      // Set to false initially for testing
+        httpOnly: true,
+        maxAge: 24 * 60 * 60 * 1000 // 24 hours
+    },
+    name: 'sessionId'       // Changed from default connect.sid
+}));
 // Main routes
 app.get('/', (req, res) => {
     res.render('index');
@@ -164,8 +186,134 @@ app.get('/blog/:slug', (req, res) => {
 
 // Auth routes
 // Auth routes
+// Auth routes
 app.get('/admin/login', (req, res) => {
     res.render('admin/login', { error: null });
+});
+
+app.post('/admin/login', (req, res) => {
+    console.log('Login attempt:', { username: req.body.username });
+    const { username, password } = req.body;
+
+    db.get('SELECT * FROM admin WHERE username = ?', [username], (err, user) => {
+        if (err) {
+            return res.render('admin/login', { error: 'An error occurred' });
+        }
+
+        if (!user) {
+            return res.render('admin/login', { error: 'Invalid credentials' });
+        }
+
+        bcrypt.compare(password, user.password, (err, match) => {
+            if (err || !match) {
+                return res.render('admin/login', { error: 'Invalid credentials' });
+            }
+
+            req.session.isAuthenticated = true;
+            console.log('Login successful, setting session:', req.session);
+            
+            // Save session explicitly
+            req.session.save((err) => {
+                if (err) {
+                    console.error('Session save error:', err);
+                    return res.render('admin/login', { error: 'Session error occurred' });
+                }
+                console.log('Session saved successfully:', req.session);
+                res.redirect('/admin');
+            });
+        });
+    });
+});
+
+app.get('/admin/recovery', (req, res) => {
+    res.render('admin/reset-password', { showPasswordFields: false });
+});
+
+app.post('/admin/recovery', (req, res) => {
+    const { recoveryCode, newPassword, confirmPassword } = req.body;
+
+    // If only recovery code is provided (first step)
+    if (recoveryCode && !newPassword) {
+        db.get('SELECT * FROM admin WHERE id = 1', [], (err, user) => {
+            if (err) {
+                return res.render('admin/reset-password', { 
+                    error: 'An error occurred',
+                    showPasswordFields: false 
+                });
+            }
+
+            // Check both recovery codes
+            bcrypt.compare(recoveryCode, user.recovery_code1, (err, match1) => {
+                bcrypt.compare(recoveryCode, user.recovery_code2, (err, match2) => {
+                    if (match1 || match2) {
+                        // Valid recovery code, show password fields
+                        return res.render('admin/reset-password', { 
+                            showPasswordFields: true,
+                            recoveryCode: recoveryCode
+                        });
+                    } else {
+                        return res.render('admin/reset-password', { 
+                            error: 'Invalid recovery code',
+                            showPasswordFields: false 
+                        });
+                    }
+                });
+            });
+        });
+    } 
+    // If both recovery code and new password are provided (second step)
+    else if (recoveryCode && newPassword && confirmPassword) {
+        if (newPassword !== confirmPassword) {
+            return res.render('admin/reset-password', { 
+                error: 'Passwords do not match',
+                showPasswordFields: true,
+                recoveryCode: recoveryCode
+            });
+        }
+
+        if (newPassword.length < 8) {
+            return res.render('admin/reset-password', { 
+                error: 'Password must be at least 8 characters long',
+                showPasswordFields: true,
+                recoveryCode: recoveryCode
+            });
+        }
+
+        // Generate new recovery codes
+        const newRecoveryCode1 = generateRecoveryCode();
+        const newRecoveryCode2 = generateRecoveryCode();
+
+        // Hash new password and recovery codes
+        bcrypt.hash(newPassword, 10, (err, hashedPassword) => {
+            bcrypt.hash(newRecoveryCode1, 10, (err, hashedCode1) => {
+                bcrypt.hash(newRecoveryCode2, 10, (err, hashedCode2) => {
+                    // Update admin record
+                    db.run(`
+                        UPDATE admin 
+                        SET password = ?, 
+                            recovery_code1 = ?, 
+                            recovery_code2 = ?,
+                            last_recovery_date = CURRENT_TIMESTAMP
+                        WHERE id = 1
+                    `, [hashedPassword, hashedCode1, hashedCode2], (err) => {
+                        if (err) {
+                            return res.render('admin/reset-password', { 
+                                error: 'An error occurred',
+                                showPasswordFields: true,
+                                recoveryCode: recoveryCode
+                            });
+                        }
+
+                        // Show new recovery codes
+                        res.render('admin/new-recovery-codes', {
+                            recoveryCode1: newRecoveryCode1,
+                            recoveryCode2: newRecoveryCode2
+                        });
+                    });
+                });
+            });
+        });
+    }
 });
 
 app.post('/admin/login', (req, res) => {
@@ -618,6 +766,16 @@ app.post('/admin/delete-blog/:id', isAuthenticated, (req, res) => {
                 });
             });
         });
+    });
+});
+
+// Debug route to check session status
+app.get('/debug-session', (req, res) => {
+    res.json({
+        sessionID: req.sessionID,
+        session: req.session,
+        isAuthenticated: req.session?.isAuthenticated,
+        cookies: req.cookies
     });
 });
 

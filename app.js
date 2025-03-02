@@ -782,6 +782,278 @@ app.get('/debug-session', (req, res) => {
     });
 });
 
+// Add these routes to your app.js file
+
+// Route to get the edit gallery page
+app.get('/admin/edit-gallery/:id', isAuthenticated, (req, res) => {
+    const galleryId = req.params.id;
+    
+    db.get(`
+        SELECT galleries.*, GROUP_CONCAT(gallery_images.filename) AS images
+        FROM galleries
+        LEFT JOIN gallery_images ON galleries.id = gallery_images.gallery_id
+        WHERE galleries.id = ?
+        GROUP BY galleries.id
+    `, [galleryId], (err, gallery) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send('Error fetching gallery');
+        }
+        
+        if (!gallery) {
+            return res.status(404).send('Gallery not found');
+        }
+        
+        gallery.images = gallery.images ? gallery.images.split(',') : [];
+        
+        res.render('admin/edit-gallery', { gallery });
+    });
+});
+
+// Route to update a gallery
+app.post('/admin/update-gallery/:id', isAuthenticated, upload.array('newImages', 50), (req, res) => {
+    const galleryId = req.params.id;
+    const { title, description, removedImages } = req.body;
+    const newFiles = req.files;
+    
+    // Parse the removed images array
+    let imagesToRemove = [];
+    if (removedImages) {
+        try {
+            imagesToRemove = JSON.parse(removedImages);
+        } catch (e) {
+            console.error('Error parsing removedImages:', e);
+        }
+    }
+    
+    db.serialize(() => {
+        db.run('BEGIN TRANSACTION');
+        
+        // Update gallery details
+        db.run(
+            'UPDATE galleries SET title = ?, description = ? WHERE id = ?',
+            [title, description, galleryId],
+            function(err) {
+                if (err) {
+                    db.run('ROLLBACK');
+                    console.error(err);
+                    return res.status(500).send('Error updating gallery');
+                }
+                
+                // Process removed images
+                if (imagesToRemove.length > 0) {
+                    const placeholders = imagesToRemove.map(() => '?').join(',');
+                    db.run(
+                        `DELETE FROM gallery_images WHERE gallery_id = ? AND filename IN (${placeholders})`,
+                        [galleryId, ...imagesToRemove],
+                        function(err) {
+                            if (err) {
+                                db.run('ROLLBACK');
+                                console.error(err);
+                                return res.status(500).send('Error removing images');
+                            }
+                            
+                            // Delete image files
+                            imagesToRemove.forEach(filename => {
+                                const filePath = path.join(__dirname, 'public', 'uploads', filename);
+                                fs.unlink(filePath, (err) => {
+                                    if (err) console.error('Error deleting file:', err);
+                                });
+                            });
+                        }
+                    );
+                }
+                
+                // Add new images
+                if (newFiles && newFiles.length > 0) {
+                    const stmt = db.prepare('INSERT INTO gallery_images (gallery_id, filename) VALUES (?, ?)');
+                    newFiles.forEach(file => {
+                        stmt.run(galleryId, file.filename);
+                    });
+                    stmt.finalize();
+                }
+                
+                db.run('COMMIT');
+                res.redirect('/admin');
+            }
+        );
+    });
+});
+
+// Route to get the edit blog post page
+app.get('/admin/edit-blog/:id', isAuthenticated, (req, res) => {
+    const postId = req.params.id;
+    
+    db.get(`
+        SELECT 
+            blog_posts.*,
+            GROUP_CONCAT(blog_tags.tag_name) as tags
+        FROM blog_posts
+        LEFT JOIN post_tags ON blog_posts.id = post_tags.post_id
+        LEFT JOIN blog_tags ON post_tags.tag_id = blog_tags.id
+        WHERE blog_posts.id = ?
+        GROUP BY blog_posts.id
+    `, [postId], (err, post) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send('Error fetching blog post');
+        }
+        
+        if (!post) {
+            return res.status(404).send('Blog post not found');
+        }
+        
+        post.tags = post.tags ? post.tags.split(',') : [];
+        
+        res.render('admin/edit-blog', { post });
+    });
+});
+
+// Route to update a blog post
+app.post('/admin/update-blog/:id', isAuthenticated, upload.single('blogImage'), (req, res) => {
+    const postId = req.params.id;
+    const { title, content, excerpt, tags, removeFeaturedImage } = req.body;
+    const newImage = req.file ? req.file.filename : null;
+    
+    // Generate slug from title if it has changed
+    const slug = title.toLowerCase()
+        .replace(/[^\w\s-]/g, '')
+        .replace(/\s+/g, '-');
+    
+    db.serialize(() => {
+        db.run('BEGIN TRANSACTION');
+        
+        // First, check if we need to remove the current featured image
+        if (removeFeaturedImage === 'true') {
+            db.get('SELECT image FROM blog_posts WHERE id = ?', [postId], (err, post) => {
+                if (err) {
+                    db.run('ROLLBACK');
+                    console.error(err);
+                    return res.status(500).send('Error checking current image');
+                }
+                
+                if (post && post.image) {
+                    // Delete the old image file
+                    const filePath = path.join(__dirname, 'public', 'uploads', post.image);
+                    fs.unlink(filePath, (err) => {
+                        if (err) console.error('Error deleting file:', err);
+                    });
+                }
+            });
+        }
+        
+        // Update blog post details
+        let updateQuery, updateParams;
+        
+        if (newImage) {
+            // If there's a new image, update the image field
+            updateQuery = `
+                UPDATE blog_posts 
+                SET title = ?, content = ?, excerpt = ?, image = ?, slug = ?
+                WHERE id = ?
+            `;
+            updateParams = [title, content, excerpt, newImage, slug, postId];
+        } else if (removeFeaturedImage === 'true') {
+            // If featured image should be removed and no new image
+            updateQuery = `
+                UPDATE blog_posts 
+                SET title = ?, content = ?, excerpt = ?, image = NULL, slug = ?
+                WHERE id = ?
+            `;
+            updateParams = [title, content, excerpt, slug, postId];
+        } else {
+            // Just update text fields
+            updateQuery = `
+                UPDATE blog_posts 
+                SET title = ?, content = ?, excerpt = ?, slug = ?
+                WHERE id = ?
+            `;
+            updateParams = [title, content, excerpt, slug, postId];
+        }
+        
+        db.run(updateQuery, updateParams, function(err) {
+            if (err) {
+                db.run('ROLLBACK');
+                console.error(err);
+                return res.status(500).send('Error updating blog post');
+            }
+            
+            // Delete existing tag associations
+            db.run('DELETE FROM post_tags WHERE post_id = ?', [postId], function(err) {
+                if (err) {
+                    db.run('ROLLBACK');
+                    console.error(err);
+                    return res.status(500).send('Error updating tags');
+                }
+                
+                // Process new tags if provided
+                if (tags) {
+                    const tagArray = tags.split(',').map(tag => tag.trim()).filter(tag => tag);
+                    
+                    if (tagArray.length > 0) {
+                        const tagStmt = db.prepare(`
+                            INSERT OR IGNORE INTO blog_tags (tag_name)
+                            VALUES (?)
+                        `);
+                        
+                        const processNextTag = (index) => {
+                            if (index >= tagArray.length) {
+                                db.run('COMMIT');
+                                return res.redirect('/admin');
+                            }
+                            
+                            const tag = tagArray[index];
+                            tagStmt.run(tag, function(err) {
+                                if (err) {
+                                    tagStmt.finalize();
+                                    db.run('ROLLBACK');
+                                    console.error(err);
+                                    return res.status(500).send('Error adding tag');
+                                }
+                                
+                                db.run(`
+                                    INSERT INTO post_tags (post_id, tag_id)
+                                    SELECT ?, id FROM blog_tags WHERE tag_name = ?
+                                `, [postId, tag], function(err) {
+                                    if (err) {
+                                        tagStmt.finalize();
+                                        db.run('ROLLBACK');
+                                        console.error(err);
+                                        return res.status(500).send('Error linking tag');
+                                    }
+                                    
+                                    processNextTag(index + 1);
+                                });
+                            });
+                        };
+                        
+                        processNextTag(0);
+                        tagStmt.finalize();
+                    } else {
+                        db.run('COMMIT');
+                        res.redirect('/admin');
+                    }
+                } else {
+                    db.run('COMMIT');
+                    res.redirect('/admin');
+                }
+            });
+        });
+    });
+});
+
+// Route to handle inline image uploads for Quill editor
+app.post('/admin/upload-inline-image', isAuthenticated, upload.single('file'), (req, res) => {
+    if (!req.file) {
+        return res.status(400).json({ error: 'No file uploaded' });
+    }
+    
+    // Return the location of the uploaded file for Quill
+    res.json({
+        location: `/uploads/${req.file.filename}`
+    });
+});
+
 // Start server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

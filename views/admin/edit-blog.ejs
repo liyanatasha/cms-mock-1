@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Blog Post - Admin Dashboard</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Quill Rich Text Editor CSS -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <style>
+        /* Inherit admin styles */
+        .admin-container {
+            padding-top: 150px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-left: 20px;
+            padding-right: 20px;
+            min-height: calc(100vh - 200px);
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .admin-title {
+            color: #643c94;
+            margin: 0;
+        }
+
+        .back-link {
+            color: #643c94;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.3s;
+        }
+
+        .back-link:hover {
+            color: #f3eb2e;
+        }
+
+        .admin-form {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+            border: 3px solid #f3eb2e;
+        }
+
+        .form-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .form-row {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: #643c94;
+            font-weight: bold;
+        }
+
+        .form-input, .form-textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-input:focus, .form-textarea:focus {
+            outline: none;
+            border-color: #643c94;
+        }
+
+        .form-textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .file-upload {
+            position: relative;
+            margin-top: 10px;
+        }
+
+        .file-input {
+            position: absolute;
+            width: 0.1px;
+            height: 0.1px;
+            opacity: 0;
+        }
+
+        .file-label {
+            display: inline-block;
+            padding: 12px 24px;
+            background: #643c94;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .file-label:hover {
+            background: #f3eb2e;
+            color: #643c94;
+        }
+
+        .file-selected {
+            margin-left: 15px;
+            color: #666;
+        }
+
+        .admin-submit {
+            width: 100%;
+            padding: 15px;
+            background: #643c94;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .admin-submit:hover {
+            background: #f3eb2e;
+            color: #643c94;
+        }
+
+        .featured-image {
+            width: 100%;
+            max-width: 300px;
+            margin: 15px 0;
+            border-radius: 5px;
+            border: 2px solid #643c94;
+        }
+
+        .tag-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-top: 5px;
+            transition: border-color 0.3s;
+        }
+
+        .tag-hint {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        /* Current featured image */
+        .current-featured-image {
+            margin: 15px 0;
+        }
+
+        .image-container {
+            position: relative;
+            display: inline-block;
+            max-width: 300px;
+        }
+
+        .image-container img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+            border: 2px solid #643c94;
+        }
+
+        .remove-featured-image {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .remove-featured-image:hover {
+            background: #ff0000;
+            transform: scale(1.1);
+        }
+
+        /* Quill editor customizations */
+        #editor-container {
+            height: 400px;
+            margin-bottom: 20px;
+        }
+
+        .ql-toolbar.ql-snow {
+            border-radius: 5px 5px 0 0;
+            border-color: #ddd;
+        }
+
+        .ql-container.ql-snow {
+            border-radius: 0 0 5px 5px;
+            border-color: #ddd;
+        }
+
+        .ql-editor {
+            min-height: 350px;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        /* Custom image upload button */
+        .image-upload-btn {
+            padding: 10px 15px;
+            background: #643c94;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            margin-top: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .image-upload-btn:hover {
+            background: #f3eb2e;
+            color: #643c94;
+        }
+
+        .image-upload-wrapper {
+            margin-top: 10px;
+        }
+
+        /* Fix for white text in Quill editor */
+.ql-editor {
+  color: #333333 !important; /* Dark gray text */
+  background-color: #ffffff; /* Ensuring background is white */
+}
+
+.ql-editor p {
+  color: #333333 !important; /* Ensuring paragraphs have dark text */
+}
+
+/* Make sure placeholder text is visible */
+.ql-editor.ql-blank::before {
+  color: #999999 !important;
+  font-style: italic;
+}
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="main-header">
+        <div class="header-content">
+            <a href="/" class="logo">
+                <img src="/images/nav_logo.png" alt="TeamBuild Co. Logo" class="nav-logo">
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="/about">About Us</a></li>
+                    <li><a href="/services">Services</a></li>
+                    <li><a href="/gallery">Gallery</a></li>
+                    <li><a href="/blog">Blog</a></li>
+                    <li><a href="/contact">Contact Us</a></li>
+                </ul>
+            </nav>
+            <button class="menu-toggle" aria-label="Mobile Menu">
+                <span class="hamburger"></span>
+            </button>
+        </div>
+    </header>
+
+    <div class="admin-container">
+        <div class="admin-header">
+            <h1 class="admin-title"><i class="fas fa-edit"></i> Edit Blog Post</h1>
+            <a href="/admin" class="back-link">
+                <i class="fas fa-arrow-left"></i> Back to Dashboard
+            </a>
+        </div>
+
+        <form class="admin-form" action="/admin/update-blog/<%= post.id %>" method="POST" enctype="multipart/form-data" id="blogForm">
+            <div class="form-container">
+                <div class="form-row">
+                    <label class="form-label">
+                        <i class="fas fa-heading"></i> Blog Title
+                    </label>
+                    <input type="text" name="title" class="form-input" value="<%= post.title %>" required>
+                </div>
+
+                <div class="form-row">
+                    <label class="form-label">
+                        <i class="fas fa-paragraph"></i> Content
+                    </label>
+                    <!-- Quill editor container -->
+                    <div id="editor-container"></div>
+                    <!-- Hidden textarea to store HTML content -->
+                    <textarea name="content" id="content-field" style="display: none;"><%= post.content %></textarea>
+                    
+                    <!-- Custom image upload for inserting into content -->
+                    <div class="image-upload-wrapper">
+                        <input type="file" accept="image/*" id="inline-image-upload" style="display: none;">
+                        <button type="button" class="image-upload-btn" id="image-button">
+                            <i class="fas fa-image"></i> Insert Image
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <label class="form-label">
+                        <i class="fas fa-quote-left"></i> Excerpt
+                    </label>
+                    <textarea name="excerpt" class="form-textarea" required><%= post.excerpt %></textarea>
+                </div>
+
+                <div class="form-row">
+                    <label class="form-label">
+                        <i class="fas fa-tags"></i> Tags
+                    </label>
+                    <input type="text" name="tags" class="tag-input" value="<%= post.tags.join(', ') %>">
+                    <p class="tag-hint">Separate tags with commas (e.g., teambuilding, leadership, training)</p>
+                </div>
+
+                <div class="form-row">
+                    <label class="form-label">
+                        <i class="fas fa-image"></i> Featured Image
+                    </label>
+                    
+                    <% if (post.image) { %>
+                        <div class="current-featured-image">
+                            <div class="image-container">
+                                <img src="/uploads/<%= post.image %>" alt="Current featured image">
+                                <button type="button" class="remove-featured-image" onclick="removeFeaturedImage()">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            <!-- Hidden field to track if featured image should be removed -->
+                            <input type="hidden" name="removeFeaturedImage" id="removeFeaturedImage" value="false">
+                        </div>
+                    <% } %>
+                    
+                    <div class="file-upload">
+                        <input type="file" name="blogImage" accept="image/*" id="blogFileInput" class="file-input">
+                        <label for="blogFileInput" class="file-label">
+                            <i class="fas fa-cloud-upload-alt"></i> 
+                            <%= post.image ? 'Change Featured Image' : 'Add Featured Image' %>
+                        </label>
+                        <span class="file-selected">No file selected</span>
+                    </div>
+                </div>
+
+                <button type="submit" class="admin-submit">
+                    <i class="fas fa-save"></i> Save Changes
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <img src="/images/logo_footer.png" alt="TeamBuild Co. Logo" class="brand-logo">
+            </div>
+            <div class="footer-social">
+                <a href="[YOUR-LINKEDIN-URL]" target="_blank" class="social-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                    </svg>
+                </a>
+                <a href="[YOUR-INSTAGRAM-URL]" target="_blank" class="social-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Quill JS -->
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile menu functionality
+            const menuToggle = document.querySelector('.menu-toggle');
+            const nav = document.querySelector('.main-header nav ul');
+            
+            menuToggle.addEventListener('click', function() {
+                this.classList.toggle('active');
+                nav.classList.toggle('active');
+            });
+
+            // Close menu when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!menuToggle.contains(e.target) && !nav.contains(e.target)) {
+                    menuToggle.classList.remove('active');
+                    nav.classList.remove('active');
+                }
+            });
+
+            // File input handling
+            document.getElementById('blogFileInput').addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                const label = e.target.parentElement.querySelector('.file-selected');
+                label.textContent = file ? file.name : 'No file selected';
+            });
+
+            // Initialize Quill editor
+            const quill = new Quill('#editor-container', {
+                modules: {
+                    toolbar: [
+                        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                        ['bold', 'italic', 'underline', 'strike'],
+                        [{ 'color': [] }, { 'background': [] }],
+                        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                        [{ 'align': [] }],
+                        ['link', 'blockquote'],
+                        ['clean']
+                    ]
+                },
+                theme: 'snow'
+            });
+
+            // Set initial content
+            quill.root.innerHTML = document.getElementById('content-field').value;
+
+            // Handle form submission - update the hidden field with Quill's content
+            document.getElementById('blogForm').addEventListener('submit', function() {
+                document.getElementById('content-field').value = quill.root.innerHTML;
+            });
+
+            // Image Upload Button functionality
+            document.getElementById('image-button').addEventListener('click', function() {
+                document.getElementById('inline-image-upload').click();
+            });
+
+            // Handle image upload to insert into Quill
+            document.getElementById('inline-image-upload').addEventListener('change', function() {
+                const file = this.files[0];
+                if (file) {
+                    const formData = new FormData();
+                    formData.append('file', file);
+
+                    fetch('/admin/upload-inline-image', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.location) {
+                            // Get current cursor position or selection
+                            const range = quill.getSelection(true);
+                            
+                            // Insert image at current cursor position
+                            quill.insertEmbed(range.index, 'image', data.location);
+                            // Move cursor to right after the inserted image
+                            quill.setSelection(range.index + 1);
+                        } else {
+                            alert('Image upload failed');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error uploading image:', error);
+                        alert('Image upload failed');
+                    });
+
+                    // Reset file input
+                    this.value = '';
+                }
+            });
+        });
+
+        // Function to handle featured image removal
+        function removeFeaturedImage() {
+            // Show image is marked for removal
+            const imageContainer = document.querySelector('.image-container');
+            imageContainer.style.opacity = '0.3';
+            
+            // Update hidden input
+            document.getElementById('removeFeaturedImage').value = 'true';
+            
+            // Change remove button to undo button
+            const removeButton = document.querySelector('.remove-featured-image');
+            removeButton.innerHTML = '<i class="fas fa-undo"></i>';
+            removeButton.setAttribute('onclick', 'restoreFeaturedImage()');
+            
+            // Update file input label
+            const fileLabel = document.querySelector('.file-label');
+            fileLabel.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> Add New Featured Image';
+        }
+        
+        function restoreFeaturedImage() {
+            // Restore image
+            const imageContainer = document.querySelector('.image-container');
+            imageContainer.style.opacity = '1';
+            
+            // Update hidden input
+            document.getElementById('removeFeaturedImage').value = 'false';
+            
+            // Change undo button back to remove button
+            const removeButton = document.querySelector('.remove-featured-image');
+            removeButton.innerHTML = '<i class="fas fa-times"></i>';
+            removeButton.setAttribute('onclick', 'removeFeaturedImage()');
+            
+            // Update file input label
+            const fileLabel = document.querySelector('.file-label');
+            fileLabel.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> Change Featured Image';
+        }
+    </script>
+</body>
+</html>

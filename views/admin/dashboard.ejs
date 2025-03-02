@@ -6,6 +6,8 @@
     <title>Admin Dashboard - Experience Enablers</title>
     <link rel="stylesheet" href="/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+<script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
     <style>
         /* Admin-specific styles */
         .admin-container {
@@ -280,6 +282,95 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        .admin-card-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.edit-btn {
+    background: #4a9e5c;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.edit-btn:hover {
+    background: #f3eb2e;
+    color: #643c94;
+    transform: translateY(-2px);
+}
+
+/* Quill editor customizations */
+#new-editor-container {
+    height: 400px;
+    margin-bottom: 20px;
+}
+
+.ql-toolbar.ql-snow {
+    border-radius: 5px 5px 0 0;
+    border-color: #ddd;
+}
+
+.ql-container.ql-snow {
+    border-radius: 0 0 5px 5px;
+    border-color: #ddd;
+}
+
+.ql-editor {
+    min-height: 350px;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+/* Custom image upload button */
+.image-upload-btn {
+    padding: 10px 15px;
+    background: #643c94;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin-top: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.image-upload-btn:hover {
+    background: #f3eb2e;
+    color: #643c94;
+}
+
+.image-upload-wrapper {
+    margin-top: 10px;
+}
+
+/* Fix for white text in Quill editor */
+.ql-editor {
+  color: #333333 !important; /* Dark gray text */
+  background-color: #ffffff; /* Ensuring background is white */
+}
+
+.ql-editor p {
+  color: #333333 !important; /* Ensuring paragraphs have dark text */
+}
+
+/* Make sure placeholder text is visible */
+.ql-editor.ql-blank::before {
+  color: #999999 !important;
+  font-style: italic;
+}
     </style>
 </head>
 <body>
@@ -294,6 +385,7 @@
                     <li><a href="/about">About Us</a></li>
                     <li><a href="/services">Services</a></li>
                     <li><a href="/gallery">Gallery</a></li>
+                    <li><a href="/blog">Blog</a></li>
                     <li><a href="/contact">Contact Us</a></li>
                 </ul>
             </nav>
@@ -368,10 +460,16 @@
                     <div class="admin-card">
                         <div class="admin-card-header">
                             <h3 class="admin-card-title"><%= gallery.title %></h3>
-                            <span class="gallery-date">
-                                <i class="fas fa-calendar"></i> <%= gallery.created_at %>
-                            </span>
+                            <div class="admin-card-actions">
+                                <span class="gallery-date">
+                                    <i class="fas fa-calendar"></i> <%= gallery.created_at %>
+                                </span>
+                                <a href="/admin/edit-gallery/<%= gallery.id %>" class="edit-btn">
+                                    <i class="fas fa-edit"></i> Edit Gallery
+                                </a>
+                            </div>
                         </div>
+                        
                         
                         <p><%= gallery.description %></p>
                         
@@ -395,55 +493,67 @@
 
         <!-- Blog Management Tab -->
         <div class="tab-content" id="blog-tab">
-            <form class="admin-form" action="/admin/add-blog" method="POST" enctype="multipart/form-data">
-                <div class="form-container">
-                    <div class="form-row">
-                        <label class="form-label">
-                            <i class="fas fa-heading"></i> Blog Title
-                        </label>
-                        <input type="text" name="title" class="form-input" required>
-                    </div>
+            <!-- Replace the blog form in dashboard.ejs with this code -->
+<form class="admin-form" action="/admin/add-blog" method="POST" enctype="multipart/form-data" id="newBlogForm">
+    <div class="form-container">
+        <div class="form-row">
+            <label class="form-label">
+                <i class="fas fa-heading"></i> Blog Title
+            </label>
+            <input type="text" name="title" class="form-input" required>
+        </div>
 
-                    <div class="form-row">
-                        <label class="form-label">
-                            <i class="fas fa-paragraph"></i> Content
-                        </label>
-                        <textarea name="content" class="form-textarea" required></textarea>
-                    </div>
+        <div class="form-row">
+            <label class="form-label">
+                <i class="fas fa-paragraph"></i> Content
+            </label>
+            <!-- Quill editor container -->
+            <div id="new-editor-container"></div>
+            <!-- Hidden textarea to store HTML content -->
+            <textarea name="content" id="new-content-field" style="display: none;"></textarea>
+            
+            <!-- Custom image upload for inserting into content -->
+            <div class="image-upload-wrapper">
+                <input type="file" accept="image/*" id="new-inline-image-upload" style="display: none;">
+                <button type="button" class="image-upload-btn" id="new-image-button">
+                    <i class="fas fa-image"></i> Insert Image
+                </button>
+            </div>
+        </div>
 
-                    <div class="form-row">
-                        <label class="form-label">
-                            <i class="fas fa-quote-left"></i> Excerpt
-                        </label>
-                        <textarea name="excerpt" class="form-textarea" required></textarea>
-                    </div>
+        <div class="form-row">
+            <label class="form-label">
+                <i class="fas fa-quote-left"></i> Excerpt
+            </label>
+            <textarea name="excerpt" class="form-textarea" required></textarea>
+        </div>
 
-                    <div class="form-row">
-                        <label class="form-label">
-                            <i class="fas fa-tags"></i> Tags
-                        </label>
-                        <input type="text" name="tags" class="tag-input">
-                        <p class="tag-hint">Separate tags with commas (e.g., teambuilding, leadership, training)</p>
-                    </div>
+        <div class="form-row">
+            <label class="form-label">
+                <i class="fas fa-tags"></i> Tags
+            </label>
+            <input type="text" name="tags" class="tag-input">
+            <p class="tag-hint">Separate tags with commas (e.g., teambuilding, leadership, training)</p>
+        </div>
 
-                    <div class="form-row">
-                        <label class="form-label">
-                            <i class="fas fa-image"></i> Featured Image
-                        </label>
-                        <div class="file-upload">
-                            <input type="file" name="blogImage" accept="image/*" id="blogFileInput" class="file-input">
-                            <label for="blogFileInput" class="file-label">
-                                <i class="fas fa-cloud-upload-alt"></i> Choose File
-                            </label>
-                            <span class="file-selected">No file selected</span>
-                        </div>
-                    </div>
+        <div class="form-row">
+            <label class="form-label">
+                <i class="fas fa-image"></i> Featured Image
+            </label>
+            <div class="file-upload">
+                <input type="file" name="blogImage" accept="image/*" id="blogFileInput" class="file-input">
+                <label for="blogFileInput" class="file-label">
+                    <i class="fas fa-cloud-upload-alt"></i> Choose File
+                </label>
+                <span class="file-selected">No file selected</span>
+            </div>
+        </div>
 
-                    <button type="submit" class="admin-submit">
-                        <i class="fas fa-plus-circle"></i> Publish Post
-                    </button>
-                </div>
-            </form>
+        <button type="submit" class="admin-submit">
+            <i class="fas fa-plus-circle"></i> Publish Post
+        </button>
+    </div>
+</form>
 
             <div class="existing-content">
                 <h2><i class="fas fa-list"></i> Existing Blog Posts</h2>
@@ -451,11 +561,16 @@
                     <div class="admin-card">
                         <div class="admin-card-header">
                             <h3 class="admin-card-title"><%= post.title %></h3>
-                            <span class="post-date">
-                                <i class="fas fa-calendar"></i> <%= post.created_at %>
-                            </span>
+                            <div class="admin-card-actions">
+                                <span class="post-date">
+                                    <i class="fas fa-calendar"></i> <%= post.created_at %>
+                                </span>
+                                <a href="/admin/edit-blog/<%= post.id %>" class="edit-btn">
+                                    <i class="fas fa-edit"></i> Edit Post
+                                </a>
+                            </div>
                         </div>
-                        
+
                         <% if (post.image) { %>
                             <div class="admin-grid-item" style="max-width: 300px; margin: 15px 0;">
                                 <img src="/uploads/<%= post.image %>" alt="Blog featured image">
@@ -512,7 +627,7 @@
                 this.classList.toggle('active');
                 nav.classList.toggle('active');
             });
-
+    
             // Close menu when clicking outside
             document.addEventListener('click', function(e) {
                 if (!menuToggle.contains(e.target) && !nav.contains(e.target)) {
@@ -520,7 +635,7 @@
                     nav.classList.remove('active');
                 }
             });
-
+    
             // Close menu when clicking a link
             document.querySelectorAll('.main-header nav ul li a').forEach(link => {
                 link.addEventListener('click', () => {
@@ -528,7 +643,7 @@
                     nav.classList.remove('active');
                 });
             });
-
+    
             // Tab switching functionality
             document.querySelectorAll('.tab-button').forEach(button => {
                 button.addEventListener('click', () => {
@@ -541,7 +656,7 @@
                     document.getElementById(`${button.dataset.tab}-tab`).classList.add('active');
                 });
             });
-
+    
             // File input handling for gallery
             document.getElementById('galleryFileInput').addEventListener('change', function(e) {
                 const files = e.target.files;
@@ -550,13 +665,76 @@
                     ? `${files.length} file${files.length !== 1 ? 's' : ''} selected` 
                     : 'No files selected';
             });
-
+    
             // File input handling for blog
             document.getElementById('blogFileInput').addEventListener('change', function(e) {
                 const file = e.target.files[0];
                 const label = e.target.parentElement.querySelector('.file-selected');
                 label.textContent = file ? file.name : 'No file selected';
             });
+    
+            // Initialize Quill editor for new blog posts
+            if (document.getElementById('new-editor-container')) {
+                const quill = new Quill('#new-editor-container', {
+                    modules: {
+                        toolbar: [
+                            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                            ['bold', 'italic', 'underline', 'strike'],
+                            [{ 'color': [] }, { 'background': [] }],
+                            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                            [{ 'align': [] }],
+                            ['link', 'blockquote'],
+                            ['clean']
+                        ]
+                    },
+                    theme: 'snow'
+                });
+                
+                // Handle form submission - update the hidden field with Quill's content
+                document.getElementById('newBlogForm').addEventListener('submit', function() {
+                    document.getElementById('new-content-field').value = quill.root.innerHTML;
+                });
+                
+                // Image Upload Button functionality
+                document.getElementById('new-image-button').addEventListener('click', function() {
+                    document.getElementById('new-inline-image-upload').click();
+                });
+                
+                // Handle image upload to insert into Quill
+                document.getElementById('new-inline-image-upload').addEventListener('change', function() {
+                    const file = this.files[0];
+                    if (file) {
+                        const formData = new FormData();
+                        formData.append('file', file);
+                        
+                        fetch('/admin/upload-inline-image', {
+                            method: 'POST',
+                            body: formData
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.location) {
+                                // Get current cursor position or selection
+                                const range = quill.getSelection(true);
+                                
+                                // Insert image at current cursor position
+                                quill.insertEmbed(range.index, 'image', data.location);
+                                // Move cursor to right after the inserted image
+                                quill.setSelection(range.index + 1);
+                            } else {
+                                alert('Image upload failed');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error uploading image:', error);
+                            alert('Image upload failed');
+                        });
+                        
+                        // Reset file input
+                        this.value = '';
+                    }
+                });
+            }
         });
     </script>
 </body>

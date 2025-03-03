@@ -9,6 +9,22 @@
     <!-- Quill Rich Text Editor CSS -->
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <style>
+
+        /* Fix for white text in Quill editor */
+.ql-editor {
+  color: #333333 !important; /* Dark gray text */
+  background-color: #ffffff; /* Ensuring background is white */
+}
+
+.ql-editor p {
+  color: #333333 !important; /* Ensuring paragraphs have dark text */
+}
+
+/* Make sure placeholder text is visible */
+.ql-editor.ql-blank::before {
+  color: #999999 !important;
+  font-style: italic;
+}
         /* Inherit admin styles */
         .admin-container {
             padding-top: 150px;
